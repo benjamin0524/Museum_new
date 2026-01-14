@@ -1,0 +1,117 @@
+import React, { useEffect, useState, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Loader } from '@react-three/drei';
+import { AppState, ArtworkData, MuseumTheme } from './types';
+import { generateMuseumContent } from './services/geminiService';
+import { Player } from './components/Player';
+import { MuseumRoom } from './components/MuseumRoom';
+import { Artwork } from './components/Artwork';
+import { Overlay } from './components/Overlay';
+import { ROOM_DEPTH } from './constants';
+
+const App: React.FC = () => {
+  const [appState, setAppState] = useState<AppState>(AppState.LOADING);
+  const [theme, setTheme] = useState<MuseumTheme | null>(null);
+  const [artworks, setArtworks] = useState<ArtworkData[]>([]);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [selectedArtwork, setSelectedArtwork] = useState<ArtworkData | null>(null);
+
+
+  // Input State for Mobile/Cross-component controls
+  const inputRef = React.useRef({
+    moveVector: { x: 0, z: 0 },
+    lookDelta: { x: 0, y: 0 },
+    isInteracting: false
+  });
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      if (/android|ipad|iphone|ipod/i.test(userAgent.toLowerCase())) {
+        return true;
+      }
+      return window.innerWidth < 768; // Fallback for simple testing
+    };
+    setIsMobile(checkMobile());
+  }, []);
+  useEffect(() => {
+    const initMuseum = async () => {
+      // Fetch generative content from Gemini
+      const content = await generateMuseumContent();
+      setTheme(content.theme);
+      setArtworks(content.artworks);
+      setAppState(AppState.PLAYING);
+    };
+
+    initMuseum();
+  }, []);
+
+  const handleArtworkSelect = (artwork: ArtworkData) => {
+    setSelectedArtwork(artwork);
+    setAppState(AppState.INSPECTING);
+    document.exitPointerLock(); // Free cursor for modal interaction
+  };
+
+  const handleCloseArtwork = () => {
+    setSelectedArtwork(null);
+    setAppState(AppState.PLAYING);
+  };
+
+  // Start position: Near the entrance (Positive Z), looking towards the end (Negative Z)
+  const startZ = ROOM_DEPTH / 2 - 5;
+
+  return (
+    <>
+      {/* 3D Scene */}
+      <Canvas
+        shadows
+        camera={{ position: [0, 1.7, startZ], fov: 75 }}
+        className="w-full h-full bg-[#f0f0f0]"
+        style={{ pointerEvents: appState === AppState.INSPECTING ? 'none' : 'auto' }}
+      >
+        {/* Environment Settings - Bright & Airy */}
+        <color attach="background" args={['#f0f0f0']} />
+        <fog attach="fog" args={['#f0f0f0', 5, 40]} />
+
+        <Suspense fallback={null}>
+          <MuseumRoom />
+
+          {artworks.map((art) => (
+            <Artwork
+              key={art.id}
+              data={art}
+              onSelect={handleArtworkSelect}
+              isHovered={hoveredId === art.id}
+              setHoveredId={setHoveredId}
+            />
+          ))}
+
+          <Player
+            appState={appState}
+            setAppState={setAppState}
+            inputRef={inputRef}
+            isMobile={isMobile}
+          />
+        </Suspense>
+      </Canvas>
+
+      {/* 2D UI Layer */}
+      <Overlay
+        appState={appState}
+        setAppState={setAppState}
+        hoveredId={hoveredId}
+        selectedArtwork={selectedArtwork}
+        onCloseArtwork={handleCloseArtwork}
+        theme={theme}
+        inputRef={inputRef}
+        isMobile={isMobile}
+      />
+
+      <Loader />
+    </>
+  );
+};
+
+export default App;

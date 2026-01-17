@@ -52,8 +52,8 @@ const App: React.FC = () => {
   const lastInteractionTime = React.useRef(0);
 
   const handleArtworkSelect = (artwork: ArtworkData) => {
-    // Cooldown check (prevent selection within 8s of closing)
-    if (Date.now() - lastInteractionTime.current < 8000) return;
+    // Cooldown check (prevent selection within 2s of closing)
+    if (Date.now() - lastInteractionTime.current < 2000) return;
 
     setSelectedArtwork(artwork);
     setAppState(AppState.INSPECTING);

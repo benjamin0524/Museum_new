@@ -41,7 +41,7 @@ export const ObesityGame: React.FC<ObesityGameProps> = ({ onClose }) => {
         <div className="w-full flex flex-col gap-6">
 
             {/* Game Container */}
-            <div className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+            <div className="relative w-full min-h-[60vh] md:min-h-0 md:aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
                 {/* Background Video/Image */}
                 <img
                     src={data?.imageUrl || "https://picsum.photos/800/600?grayscale"}

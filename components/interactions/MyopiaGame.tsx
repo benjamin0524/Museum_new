@@ -65,7 +65,7 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
             {/* Game Container */}
             <div
                 ref={containerRef}
-                className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl cursor-none border border-gray-700 touch-none" // Added touch-none
+                className="relative w-full min-h-[60vh] md:min-h-0 md:aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl cursor-none border border-gray-700 touch-none"
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
                 onClick={() => { if (gameState === 'START') handleStart(); }}

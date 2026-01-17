@@ -18,11 +18,11 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
         videoPlaceholderText: "影片播放中：請觀察對方的嘴型...",
         options: [
             "今天運氣好嗎？",
-            "今天天氣好冷嗎？",
+            "今天好冷嗎？",
             "今天甜點好吃嗎？",
-            "今天天氣好熱嗎？"
+            "今天好熱嗎？"
         ],
-        correctIndex: 1 // "今天天氣好冷嗎？" is at index 1
+        correctIndex: 1 // "今天好冷嗎？" is at index 1
     };
 
     const handleStart = () => {

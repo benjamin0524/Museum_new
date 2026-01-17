@@ -48,13 +48,20 @@ const App: React.FC = () => {
     initMuseum();
   }, []);
 
+  // Interaction Cooldown Ref to prevent immediate re-selection after closing
+  const lastInteractionTime = React.useRef(0);
+
   const handleArtworkSelect = (artwork: ArtworkData) => {
+    // Cooldown check (prevent selection within 8s of closing)
+    if (Date.now() - lastInteractionTime.current < 8000) return;
+
     setSelectedArtwork(artwork);
     setAppState(AppState.INSPECTING);
     document.exitPointerLock(); // Free cursor for modal interaction
   };
 
   const handleCloseArtwork = () => {
+    lastInteractionTime.current = Date.now(); // Set cooldown start time
     setSelectedArtwork(null);
     setAppState(AppState.PLAYING);
   };
@@ -107,6 +114,8 @@ const App: React.FC = () => {
         theme={theme}
         inputRef={inputRef}
         isMobile={isMobile}
+        artworks={artworks}
+        onSelectArtwork={handleArtworkSelect}
       />
 
       <Loader />

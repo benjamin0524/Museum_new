@@ -41,6 +41,7 @@ export const Artwork: React.FC<ArtworkProps> = ({ data, onSelect, isHovered, set
           onClick={handleClick}
           onPointerOver={() => setHoveredId(data.id)}
           onPointerOut={() => setHoveredId(null)}
+          userData={{ artworkId: data.id }}
         >
           <boxGeometry args={[2.3, 3.3, 0.1]} />
           <meshStandardMaterial
@@ -60,7 +61,8 @@ export const Artwork: React.FC<ArtworkProps> = ({ data, onSelect, isHovered, set
       {/* Canvas / Image */}
       <mesh position={[0, 0, 0.06]} onClick={handleClick}
         onPointerOver={() => setHoveredId(data.id)}
-        onPointerOut={() => setHoveredId(null)}>
+        onPointerOut={() => setHoveredId(null)}
+        userData={{ artworkId: data.id }}>
         <planeGeometry args={[1.9, 2.9]} />
         <meshBasicMaterial map={texture} />
       </mesh>

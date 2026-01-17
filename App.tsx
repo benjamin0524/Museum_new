@@ -7,6 +7,7 @@ import { Player } from './components/Player';
 import { MuseumRoom } from './components/MuseumRoom';
 import { Artwork } from './components/Artwork';
 import { Overlay } from './components/Overlay';
+import { CrosshairRaycaster } from './components/CrosshairRaycaster';
 import { ROOM_DEPTH } from './constants';
 
 const App: React.FC = () => {
@@ -101,6 +102,9 @@ const App: React.FC = () => {
             inputRef={inputRef}
             isMobile={isMobile}
           />
+
+          {/* Mobile Crosshair Raycaster - Detects artwork at screen center */}
+          {isMobile && <CrosshairRaycaster setHoveredId={setHoveredId} enabled={appState === AppState.PLAYING} />}
         </Suspense>
       </Canvas>
 

@@ -97,9 +97,8 @@ export const Player: React.FC<PlayerProps> = ({ appState, setAppState, inputRef,
       const lookSpeed = 0.005;
       // We manually rotate the camera object since we don't have PointerLock controls
       camera.rotation.y -= lookDelta.x * lookSpeed;
-      camera.rotation.x -= lookDelta.y * lookSpeed;
-      // Clamp X rotation to avoid flipping upside down
-      camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+      // RESTRICT VERTICAL LOOK: camera.rotation.x is disabled
+      camera.rotation.x = 0;
 
       // Reset delta after consumption
       inputRef.current.lookDelta = { x: 0, y: 0 };
@@ -145,6 +144,9 @@ export const Player: React.FC<PlayerProps> = ({ appState, setAppState, inputRef,
       {!isMobile && (
         <PointerLockControls
           ref={controlsRef}
+          // Lock to horizon
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
           onLock={() => setAppState(AppState.PLAYING)}
           onUnlock={() => {
             // if (appState === AppState.PLAYING) setAppState(AppState.PAUSED?);

@@ -221,9 +221,8 @@ export const Overlay: React.FC<OverlayProps> = ({
 
       {/* Interaction Prompt (Both Mobile and Desktop) */}
       {hoveredId && (
-        <div className="absolute top-[55%] left-1/2 -translate-x-1/2 text-gray-900 bg-white/90 px-6 py-2 rounded-full backdrop-blur border border-blue-200 shadow-lg z-10 animate-fade-in-up">
-          <span className="font-bold text-blue-600 mr-2">{isMobile ? "點擊 VIEW" : "點擊"}</span>
-          檢視作品
+        <div className="absolute top-[55%] left-1/2 -translate-x-1/2 text-gray-900 bg-white/90 px-6 py-2 rounded-full backdrop-blur border border-blue-200 shadow-lg z-10 animate-fade-in-up cursor-pointer">
+          <span className="font-bold text-blue-600 tracking-widest">VIEW</span>
         </div>
       )}
 

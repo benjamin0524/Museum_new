@@ -126,31 +126,33 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
                 )}
 
                 {gameState === 'FOUND' && (
-                    <div className="absolute inset-0 bg-black/80 z-30 flex flex-col items-center justify-center animate-fade-in text-center p-8">
-                        <div className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl">
-                            <div className="text-8xl mb-6">👓</div>
-                            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">你看見了嗎？</h3>
-                            <p className="text-2xl text-gray-200 mb-8 leading-relaxed font-light">
-                                「在沒有輔助的情況下，世界是模糊的。<br />眼鏡與醫學，讓我們重新擁有選擇清晰的權利。」
-                            </p>
-                            <p className="text-xl text-cyan-300 italic mb-10 border-l-4 border-cyan-500 pl-6 text-left leading-normal">
-                                {data?.details.coreMessage}
-                            </p>
-                            <div className="flex gap-4 justify-center">
-                                <button
-                                    onClick={handleStart}
-                                    className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
-                                >
-                                    再玩一次
-                                </button>
-                                {onClose && (
+                    <div className="absolute inset-0 bg-black/80 z-30 overflow-y-auto animate-fade-in">
+                        <div className="min-h-full w-full flex flex-col items-center justify-center p-4 py-8 text-center">
+                            <div className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl">
+                                <div className="text-8xl mb-6">👓</div>
+                                <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">你看見了嗎？</h3>
+                                <p className="text-2xl text-gray-200 mb-8 leading-relaxed font-light">
+                                    「在沒有輔助的情況下，世界是模糊的。<br />眼鏡與醫學，讓我們重新擁有選擇清晰的權利。」
+                                </p>
+                                <p className="text-xl text-cyan-300 italic mb-10 border-l-4 border-cyan-500 pl-6 text-left leading-normal">
+                                    {data?.details.coreMessage}
+                                </p>
+                                <div className="flex gap-4 justify-center">
                                     <button
-                                        onClick={onClose}
-                                        className="px-8 py-3 bg-white/20 hover:bg-white/30 text-white border border-white/50 rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95 flex items-center gap-2"
+                                        onClick={handleStart}
+                                        className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
                                     >
-                                        <span>🏛️</span> 回到展廳
+                                        再玩一次
                                     </button>
-                                )}
+                                    {onClose && (
+                                        <button
+                                            onClick={onClose}
+                                            className="px-8 py-3 bg-white/20 hover:bg-white/30 text-white border border-white/50 rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95 flex items-center gap-2"
+                                        >
+                                            <span>🏛️</span> 回到展廳
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

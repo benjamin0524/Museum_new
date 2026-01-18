@@ -74,11 +74,14 @@ const App: React.FC = () => {
   return (
     <>
       {/* 3D Scene */}
+      {/* 3D Scene */}
       <Canvas
-        shadows
+        shadows={!isMobile} // Disable shadows entirely on mobile
+        dpr={isMobile ? [1, 1.5] : [1, 2]} // Cap mobile resolution to 1.5x pixel ratio
         camera={{ position: [0, 1.7, startZ], fov: 75 }}
         className="w-full h-full bg-[#f0f0f0]"
         style={{ pointerEvents: appState === AppState.INSPECTING ? 'none' : 'auto' }}
+        gl={{ preserveDrawingBuffer: true, antialias: !isMobile }} // Disable AA on mobile for extra speed? Maybe keep AA but lower res.
       >
         {/* Environment Settings - Bright & Airy */}
         <color attach="background" args={['#f0f0f0']} />

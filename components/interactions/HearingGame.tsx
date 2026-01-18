@@ -144,28 +144,29 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
 
                     </div>
                 </div>
+            </div>
 
-                {/* Curatorial Text Section */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                    <h4 className="font-bold text-gray-900 text-3xl mb-6 flex items-center gap-3 border-b pb-4">
-                        <span className="text-4xl">💡</span>
-                        策展人導讀
-                    </h4>
-                    <div className="space-y-6 text-xl md:text-2xl text-gray-800 leading-loose">
-                        <p>
-                            <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">身體狀態</span>
-                            {data?.details.bodyState}
-                        </p>
-                        <p>
-                            <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">成因</span>
-                            <span className="whitespace-pre-line">{data?.details.cause}</span>
-                        </p>
-                        <p>
-                            <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">醫學介入</span>
-                            <span className="whitespace-pre-line">{data?.details.intervention}</span>
-                        </p>
-                    </div>
+            {/* Curatorial Text Section */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                <h4 className="font-bold text-gray-900 text-3xl mb-6 flex items-center gap-3 border-b pb-4">
+                    <span className="text-4xl">💡</span>
+                    策展人導讀
+                </h4>
+                <div className="space-y-6 text-xl md:text-2xl text-gray-800 leading-loose">
+                    <p>
+                        <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">身體狀態</span>
+                        {data?.details.bodyState}
+                    </p>
+                    <p>
+                        <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">成因</span>
+                        <span className="whitespace-pre-line">{data?.details.cause}</span>
+                    </p>
+                    <p>
+                        <span className="font-bold text-blue-800 block mb-2 text-xl tracking-wider">醫學介入</span>
+                        <span className="whitespace-pre-line">{data?.details.intervention}</span>
+                    </p>
                 </div>
             </div>
-            );
+        </div>
+    );
 };

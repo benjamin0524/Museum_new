@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Loader } from '@react-three/drei';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { AppState, ArtworkData, MuseumTheme } from './types';
 import { generateMuseumContent } from './services/geminiService';
 import { Player } from './components/Player';
@@ -105,6 +106,17 @@ const App: React.FC = () => {
 
           {/* Mobile Crosshair Raycaster - Detects artwork at screen center */}
           {isMobile && <CrosshairRaycaster setHoveredId={setHoveredId} enabled={appState === AppState.PLAYING} />}
+
+          {/* Phase 3: Post-Processing Effects */}
+          <EffectComposer>
+            <Bloom
+              luminanceThreshold={0.9} // Only very bright things glow
+              luminanceSmoothing={0.025}
+              height={300}
+              intensity={0.4}
+            />
+            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          </EffectComposer>
         </Suspense>
       </Canvas>
 

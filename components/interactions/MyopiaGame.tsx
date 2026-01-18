@@ -119,7 +119,7 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
                             className="absolute w-48 h-48 rounded-full border-2 border-white/40 shadow-[0_0_40px_rgba(255,255,255,0.3)] pointer-events-none z-20 transform -translate-x-1/2 -translate-y-1/2"
                             style={{ left: `${cursorPos.x}%`, top: `${cursorPos.y}%` }}
                         />
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-lg font-bold z-20 pointer-events-none drop-shadow-md">
+                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full text-center whitespace-nowrap text-white/80 text-lg font-bold z-20 pointer-events-none drop-shadow-md px-4">
                             移動「眼鏡」尋找書籍
                         </div>
                     </>

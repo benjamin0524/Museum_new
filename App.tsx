@@ -85,7 +85,7 @@ const App: React.FC = () => {
         <fog attach="fog" args={['#f0f0f0', 5, 40]} />
 
         <Suspense fallback={null}>
-          <MuseumRoom />
+          <MuseumRoom isMobile={isMobile} />
 
           {artworks.map((art) => (
             <Artwork
@@ -107,16 +107,18 @@ const App: React.FC = () => {
           {/* Mobile Crosshair Raycaster - Detects artwork at screen center */}
           {isMobile && <CrosshairRaycaster setHoveredId={setHoveredId} enabled={appState === AppState.PLAYING} />}
 
-          {/* Phase 3: Post-Processing Effects */}
-          <EffectComposer>
-            <Bloom
-              luminanceThreshold={0.9} // Only very bright things glow
-              luminanceSmoothing={0.025}
-              height={300}
-              intensity={0.4}
-            />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
+          {/* Phase 3: Post-Processing Effects - Desktop Only */}
+          {!isMobile && (
+            <EffectComposer>
+              <Bloom
+                luminanceThreshold={0.9} // Only very bright things glow
+                luminanceSmoothing={0.025}
+                height={300}
+                intensity={0.4}
+              />
+              <Vignette eskil={false} offset={0.1} darkness={1.1} />
+            </EffectComposer>
+          )}
         </Suspense>
       </Canvas>
 

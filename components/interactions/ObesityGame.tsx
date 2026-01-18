@@ -131,7 +131,7 @@ export const ObesityGame: React.FC<ObesityGameProps> = ({ onClose }) => {
                     )}
 
                     {gameState === 'RESULT' && (
-                        <div className="bg-gray-900/95 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-3xl animate-fade-in">
+                        <div ref={resultRef} className="bg-gray-900/95 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-3xl animate-fade-in">
                             <h3 className="text-3xl font-bold text-white mb-6">
                                 系統比意志力更強大
                             </h3>
@@ -155,7 +155,10 @@ export const ObesityGame: React.FC<ObesityGameProps> = ({ onClose }) => {
                                 >
                                     重新模擬
                                 </button>
-                                <ShareButton text="在 Lilly Museum 發現：體重不完全是意志力的問題，環境因素影響也很大！快來測測你的環境難度。" />
+                                <ShareButton
+                                    text="在 Lilly Museum 發現：體重不完全是意志力的問題，環境因素影響也很大！快來測測你的環境難度。"
+                                    captureRef={resultRef}
+                                />
                                 {onClose && (
                                     <button
                                         onClick={onClose}

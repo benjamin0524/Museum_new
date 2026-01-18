@@ -1,6 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
-import { ROOM_WIDTH, ROOM_DEPTH } from '../constants';
+import { MeshReflectorMaterial } from '@react-three/drei';
+import { ROOM_WIDTH, ROOM_DEPTH, FRAME_LOCATIONS } from '../constants';
 
 export const MuseumRoom: React.FC = () => {
   // Create arrays for repeated elements along the Z axis
@@ -12,13 +13,16 @@ export const MuseumRoom: React.FC = () => {
 
   return (
     <group>
+      {/* Atmosphere - Volumetric Fog Feel */}
+      <fog attach="fog" args={['#1a1a1a', 5, 40]} />
+
       {/* --- LIGHTING --- */}
-      <ambientLight intensity={0.4} color="#ffffff" />
+      <ambientLight intensity={0.3} color="#ffffff" />
 
       {/* Sunlight direction */}
       <directionalLight
         position={[10, 20, 5]}
-        intensity={0.8}
+        intensity={0.5}
         castShadow
         shadow-camera-left={-20}
         shadow-camera-right={20}
@@ -29,16 +33,78 @@ export const MuseumRoom: React.FC = () => {
 
       {/* Point lights along the corridor for warm ambiance */}
       {positions.map((z, i) => (
-        <pointLight key={i} position={[0, 6, z]} intensity={0.2} color="#fff5e6" distance={15} />
+        <pointLight key={`pl-${i}`} position={[0, 6, z]} intensity={0.15} color="#fff5e6" distance={15} />
       ))}
+
+      {/* Dramatic Spotlights for Artworks */}
+      {FRAME_LOCATIONS.map((art) => {
+        // Calculate spot position relative to artwork
+        // Standard height is 2.5. Light should be higher (e.g., 6) and slightly in front
+        const [x, y, z] = art.position;
+        // Determine "front" based on rotation.
+        // Rotation [0, 0, 0] (North wall) -> Front is +Z? No, artwork at -Z looking +Z.
+        // Actually simpler: Just place light above and slightly away from wall
+
+        let lightPos: [number, number, number] = [x, 6, z];
+        let targetPos: [number, number, number] = [x, y, z];
+
+        // Adjust light position based on wall to be slightly "in front"
+        if (z < -ROOM_DEPTH / 2 + 2) { // End wall (North)
+          lightPos = [x, 6, z + 3];
+        } else if (Math.abs(x + ROOM_WIDTH / 2) < 2) { // West Wall (Left)
+          lightPos = [x + 3, 6, z];
+        } else if (Math.abs(x - ROOM_WIDTH / 2) < 2) { // East Wall (Right)
+          lightPos = [x - 3, 6, z];
+        }
+
+        return (
+          <group key={`spot-${art.id}`}>
+            <spotLight
+              position={lightPos}
+              target-position={targetPos}
+              intensity={1.5}
+              angle={0.5}
+              penumbra={0.4}
+              castShadow
+              color="#fff0e0" // Slightly warm gallery light
+              distance={20}
+            />
+            {/* Visual light fixture (track light) */}
+            <mesh position={lightPos}>
+              <cylinderGeometry args={[0.1, 0.1, 0.3]} />
+              <meshStandardMaterial color="#222" emissive="#444" />
+            </mesh>
+          </group>
+        );
+      })}
+
 
       {/* --- ARCHITECTURE --- */}
 
-      {/* Floor - Dark Polished Wood/Marble */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+      {/* Floor - Premium Reflective Material */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
         <planeGeometry args={[ROOM_WIDTH, ROOM_DEPTH]} />
-        <meshStandardMaterial color="#3e2723" roughness={0.2} metalness={0.1} />
+        <MeshReflectorMaterial
+          blur={[300, 100]}
+          resolution={1024}
+          mixBlur={1}
+          mixStrength={60} // Strength of the reflections
+          roughness={0.6} // Glossy but slightly matte wood
+          depthScale={1.2}
+          minDepthThreshold={0.4}
+          maxDepthThreshold={1.4}
+          color="#2a2a2a" // Dark elegant floor
+          metalness={0.5}
+          mirror={0.5} // Mirror intensity
+        />
       </mesh>
+
+      {/* Sub-floor to prevent z-fighting gaps */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
+        <planeGeometry args={[ROOM_WIDTH, ROOM_DEPTH]} />
+        <meshStandardMaterial color="#111" />
+      </mesh>
+
 
       {/* Ceiling */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 8, 0]}>
@@ -51,25 +117,25 @@ export const MuseumRoom: React.FC = () => {
         {/* End Wall (North/Far) */}
         <mesh position={[0, 4, -ROOM_DEPTH / 2]} receiveShadow>
           <planeGeometry args={[ROOM_WIDTH, 8]} />
-          <meshStandardMaterial color="#dcdcdc" roughness={0.8} />
+          <meshStandardMaterial color="#e5e5e5" roughness={0.9} />
         </mesh>
 
         {/* Entrance Wall (South/Back) */}
         <mesh position={[0, 4, ROOM_DEPTH / 2]} rotation={[0, Math.PI, 0]} receiveShadow>
           <planeGeometry args={[ROOM_WIDTH, 8]} />
-          <meshStandardMaterial color="#dcdcdc" roughness={0.8} />
+          <meshStandardMaterial color="#e5e5e5" roughness={0.9} />
         </mesh>
 
         {/* Left Wall (West) */}
         <mesh position={[-ROOM_WIDTH / 2, 4, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
           <planeGeometry args={[ROOM_DEPTH, 8]} />
-          <meshStandardMaterial color="#dcdcdc" roughness={0.8} />
+          <meshStandardMaterial color="#e5e5e5" roughness={0.9} />
         </mesh>
 
         {/* Right Wall (East) */}
         <mesh position={[ROOM_WIDTH / 2, 4, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
           <planeGeometry args={[ROOM_DEPTH, 8]} />
-          <meshStandardMaterial color="#dcdcdc" roughness={0.8} />
+          <meshStandardMaterial color="#e5e5e5" roughness={0.9} />
         </mesh>
       </group>
 
@@ -78,20 +144,20 @@ export const MuseumRoom: React.FC = () => {
         {/* Long walls */}
         <mesh position={[-ROOM_WIDTH / 2 + 0.05, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
           <boxGeometry args={[ROOM_DEPTH, 0.5, 0.1]} />
-          <meshStandardMaterial color="#ddd" />
+          <meshStandardMaterial color="#333" />
         </mesh>
         <mesh position={[ROOM_WIDTH / 2 - 0.05, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
           <boxGeometry args={[ROOM_DEPTH, 0.5, 0.1]} />
-          <meshStandardMaterial color="#ddd" />
+          <meshStandardMaterial color="#333" />
         </mesh>
         {/* End walls */}
         <mesh position={[0, 0, -ROOM_DEPTH / 2 + 0.05]}>
           <boxGeometry args={[ROOM_WIDTH, 0.5, 0.1]} />
-          <meshStandardMaterial color="#ddd" />
+          <meshStandardMaterial color="#333" />
         </mesh>
         <mesh position={[0, 0, ROOM_DEPTH / 2 - 0.05]}>
           <boxGeometry args={[ROOM_WIDTH, 0.5, 0.1]} />
-          <meshStandardMaterial color="#ddd" />
+          <meshStandardMaterial color="#333" />
         </mesh>
       </group>
 
@@ -101,46 +167,46 @@ export const MuseumRoom: React.FC = () => {
       {positions.map((z, idx) => (
         <group key={idx} position={[0, 0, z]}>
 
-          {/* Skylight Frame */}
+          {/* Skylight Frame - Darker industrial style */}
           <group position={[0, 8, 0]}>
             {/* Frame */}
             <mesh position={[0, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
               <boxGeometry args={[ROOM_WIDTH - 4, 4, 0.4]} />
-              <meshStandardMaterial color="#fff" />
+              <meshStandardMaterial color="#111" roughness={0.5} />
             </mesh>
             {/* Glass */}
             <mesh position={[0, -0.05, 0]} rotation={[Math.PI / 2, 0, 0]}>
               <planeGeometry args={[ROOM_WIDTH - 4.5, 3.5]} />
-              <meshBasicMaterial color="#ffffff" toneMapped={false} />
+              <meshBasicMaterial color="#e0f7fa" transparent opacity={0.3} toneMapped={false} />
             </mesh>
           </group>
 
           {/* Place Benches & Plants every OTHER section, or centered */}
           {idx % 2 !== 0 && (
             <group>
-              {/* Central Bench */}
+              {/* Central Bench - Modern Dark Wood */}
               <group rotation={[0, Math.PI / 2, 0]}>
                 <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
                   <boxGeometry args={[3, 0.1, 1.2]} />
-                  <meshStandardMaterial color="#444" roughness={0.8} />
+                  <meshStandardMaterial color="#1a1a1a" roughness={0.6} />
                 </mesh>
                 <mesh position={[-1.2, 0.2, 0]} castShadow>
                   <boxGeometry args={[0.2, 0.4, 1.2]} />
-                  <meshStandardMaterial color="#222" />
+                  <meshStandardMaterial color="#000" />
                 </mesh>
                 <mesh position={[1.2, 0.2, 0]} castShadow>
                   <boxGeometry args={[0.2, 0.4, 1.2]} />
-                  <meshStandardMaterial color="#222" />
+                  <meshStandardMaterial color="#000" />
                 </mesh>
               </group>
 
-              {/* Plants slightly offset */}
+              {/* Plants slightly offset - Minimalist Planters */}
               <group position={[3, 0, 0]}>
-                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#fff" /></mesh>
+                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#333" /></mesh>
                 <mesh position={[0, 1.0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#4a7c59" /></mesh>
               </group>
               <group position={[-3, 0, 0]}>
-                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#fff" /></mesh>
+                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#333" /></mesh>
                 <mesh position={[0, 1.0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#4a7c59" /></mesh>
               </group>
             </group>

@@ -21,6 +21,8 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
 
     const data = exhibitionData.find(d => d.id === 6);
 
+    const resultRef = useRef<HTMLDivElement>(null);
+
     const handleStart = () => {
         // Randomize book position (keep away from edges 10%-90%)
         const x = 10 + Math.random() * 80;
@@ -130,7 +132,7 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
                 {gameState === 'FOUND' && (
                     <div className="absolute inset-0 bg-black/80 z-30 overflow-y-auto animate-fade-in">
                         <div className="min-h-full w-full flex flex-col items-center justify-center p-4 py-8 text-center">
-                            <div className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl">
+                            <div ref={resultRef} className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl">
                                 <div className="text-8xl mb-6">👓</div>
                                 <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">你看見了嗎？</h3>
                                 <p className="text-2xl text-gray-200 mb-8 leading-relaxed font-light">
@@ -146,7 +148,7 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
                                     >
                                         再玩一次
                                     </button>
-                                    <ShareButton className="bg-cyan-700 hover:bg-cyan-600" />
+                                    <ShareButton className="bg-cyan-700 hover:bg-cyan-600" captureRef={resultRef} />
                                     {onClose && (
                                         <button
                                             onClick={onClose}

@@ -12,6 +12,7 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
     const [gameState, setGameState] = useState<'INTRO' | 'PLAYING' | 'RESULT'>('INTRO');
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [isCorrect, setIsCorrect] = useState(false);
+    const resultRef = React.useRef<HTMLDivElement>(null);
 
     const data = exhibitionData.find(d => d.id === 4);
 
@@ -108,7 +109,7 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
                         )}
 
                         {gameState === 'RESULT' && (
-                            <div className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl text-center animate-fade-in">
+                            <div ref={resultRef} className="bg-gray-900/90 backdrop-blur-xl p-10 rounded-3xl border border-white/10 shadow-2xl max-w-2xl text-center animate-fade-in">
                                 <div className="text-6xl mb-4">
                                     {isCorrect ? '✨' : '❓'}
                                 </div>
@@ -132,7 +133,10 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
                                     >
                                         再試一次
                                     </button>
-                                    <ShareButton text="我在 Lilly Museum 挑戰了讀唇語，真的超難！只需五分鐘，體驗生活中的「身不由己」。" />
+                                    <ShareButton
+                                        text="我在 Lilly Museum 挑戰了讀唇語，真的超難！只需五分鐘，體驗生活中的「身不由己」。"
+                                        captureRef={resultRef}
+                                    />
                                     {onClose && (
                                         <button
                                             onClick={onClose}

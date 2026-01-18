@@ -167,29 +167,65 @@ export const MuseumRoom: React.FC = () => {
       {positions.map((z, idx) => (
         <group key={idx} position={[0, 0, z]}>
 
+          {/* Phase 2: Ceiling Beams - Dark Wood */}
+          <mesh position={[0, 7.8, 0]} receiveShadow>
+            <boxGeometry args={[ROOM_WIDTH, 0.4, 0.8]} />
+            <meshStandardMaterial color="#2d2d2d" roughness={0.8} />
+          </mesh>
+
+          {/* Phase 2: Wall Moldings (Chair Rails) - Running along sides */}
+          <group>
+            {/* Left Wall Rail */}
+            <mesh position={[-ROOM_WIDTH / 2 + 0.1, 1.2, 0]} rotation={[0, 0, 0]}>
+              <boxGeometry args={[0.1, 0.1, sectionLength]} />
+              <meshStandardMaterial color="#ccc" />
+            </mesh>
+            {/* Right Wall Rail */}
+            <mesh position={[ROOM_WIDTH / 2 - 0.1, 1.2, 0]} rotation={[0, 0, 0]}>
+              <boxGeometry args={[0.1, 0.1, sectionLength]} />
+              <meshStandardMaterial color="#ccc" />
+            </mesh>
+
+            {/* Vertical Panels (Wainscoting style) - every 2 meters? */}
+            {[-2, 0, 2].map((offset) => (
+              <group key={`panel-${offset}`}>
+                <mesh position={[-ROOM_WIDTH / 2 + 0.05, 0.6, offset]}>
+                  <boxGeometry args={[0.05, 1.0, 0.05]} />
+                  <meshStandardMaterial color="#ccc" />
+                </mesh>
+                <mesh position={[ROOM_WIDTH / 2 - 0.05, 0.6, offset]}>
+                  <boxGeometry args={[0.05, 1.0, 0.05]} />
+                  <meshStandardMaterial color="#ccc" />
+                </mesh>
+              </group>
+            ))}
+          </group>
+
+
           {/* Skylight Frame - Darker industrial style */}
           <group position={[0, 8, 0]}>
             {/* Frame */}
             <mesh position={[0, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-              <boxGeometry args={[ROOM_WIDTH - 4, 4, 0.4]} />
+              <boxGeometry args={[ROOM_WIDTH - 4, 3, 0.4]} />
               <meshStandardMaterial color="#111" roughness={0.5} />
             </mesh>
             {/* Glass */}
             <mesh position={[0, -0.05, 0]} rotation={[Math.PI / 2, 0, 0]}>
-              <planeGeometry args={[ROOM_WIDTH - 4.5, 3.5]} />
-              <meshBasicMaterial color="#e0f7fa" transparent opacity={0.3} toneMapped={false} />
+              <planeGeometry args={[ROOM_WIDTH - 4.5, 2.5]} />
+              <meshBasicMaterial color="#e0f7fa" transparent opacity={0.2} toneMapped={false} />
             </mesh>
           </group>
 
           {/* Place Benches & Plants every OTHER section, or centered */}
           {idx % 2 !== 0 && (
             <group>
-              {/* Central Bench - Modern Dark Wood */}
+              {/* Central Bench - Modern Dark Wood + Cushion */}
               <group rotation={[0, Math.PI / 2, 0]}>
                 <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
                   <boxGeometry args={[3, 0.1, 1.2]} />
                   <meshStandardMaterial color="#1a1a1a" roughness={0.6} />
                 </mesh>
+                {/* Legs */}
                 <mesh position={[-1.2, 0.2, 0]} castShadow>
                   <boxGeometry args={[0.2, 0.4, 1.2]} />
                   <meshStandardMaterial color="#000" />
@@ -198,16 +234,40 @@ export const MuseumRoom: React.FC = () => {
                   <boxGeometry args={[0.2, 0.4, 1.2]} />
                   <meshStandardMaterial color="#000" />
                 </mesh>
+                {/* Cushion */}
+                <mesh position={[0, 0.5, 0]}>
+                  <boxGeometry args={[2.8, 0.1, 1.1]} />
+                  <meshStandardMaterial color="#8d6e63" roughness={1} />
+                </mesh>
               </group>
 
-              {/* Plants slightly offset - Minimalist Planters */}
-              <group position={[3, 0, 0]}>
-                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#333" /></mesh>
-                <mesh position={[0, 1.0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#4a7c59" /></mesh>
+              {/* Plants slightly offset - Upgraded Low Poly */}
+              <group position={[3.5, 0, 0]}>
+                {/* Pot */}
+                <mesh position={[0, 0.4, 0]} castShadow>
+                  <cylinderGeometry args={[0.4, 0.3, 0.8, 8]} />
+                  <meshStandardMaterial color="#222" />
+                </mesh>
+                {/* Foliage - Stacked spheres for volume */}
+                <group position={[0, 1.0, 0]}>
+                  <mesh position={[0, 0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#2e7d32" /></mesh>
+                  <mesh position={[0, 0.4, 0.2]}><dodecahedronGeometry args={[0.4, 0]} /><meshStandardMaterial color="#388e3c" /></mesh>
+                  <mesh position={[-0.2, 0.3, -0.2]}><dodecahedronGeometry args={[0.4, 0]} /><meshStandardMaterial color="#4caf50" /></mesh>
+                </group>
               </group>
-              <group position={[-3, 0, 0]}>
-                <mesh position={[0, 0.4, 0]} castShadow><boxGeometry args={[0.6, 0.8, 0.6]} /><meshStandardMaterial color="#333" /></mesh>
-                <mesh position={[0, 1.0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#4a7c59" /></mesh>
+
+              <group position={[-3.5, 0, 0]}>
+                {/* Pot */}
+                <mesh position={[0, 0.4, 0]} castShadow>
+                  <cylinderGeometry args={[0.4, 0.3, 0.8, 8]} />
+                  <meshStandardMaterial color="#222" />
+                </mesh>
+                {/* Foliage */}
+                <group position={[0, 1.0, 0]}>
+                  <mesh position={[0, 0, 0]}><dodecahedronGeometry args={[0.5, 0]} /><meshStandardMaterial color="#2e7d32" /></mesh>
+                  <mesh position={[0, 0.4, -0.2]}><dodecahedronGeometry args={[0.4, 0]} /><meshStandardMaterial color="#388e3c" /></mesh>
+                  <mesh position={[0.2, 0.3, 0.2]}><dodecahedronGeometry args={[0.4, 0]} /><meshStandardMaterial color="#4caf50" /></mesh>
+                </group>
               </group>
             </group>
           )}

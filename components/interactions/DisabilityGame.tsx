@@ -11,6 +11,7 @@ export const DisabilityGame: React.FC<DisabilityGameProps> = ({ onClose }) => {
     // Game State: 'INTRO' -> 'SCENARIO' -> 'RESULT'
     const [gameState, setGameState] = useState<'INTRO' | 'SCENARIO' | 'RESULT'>('INTRO');
     const [choice, setChoice] = useState<'TIME' | 'MONEY' | null>(null);
+    const resultRef = React.useRef<HTMLDivElement>(null);
 
     const data = exhibitionData.find(d => d.id === 2);
 

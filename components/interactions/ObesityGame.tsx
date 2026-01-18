@@ -12,6 +12,7 @@ export const ObesityGame: React.FC<ObesityGameProps> = ({ onClose }) => {
     const [gameState, setGameState] = useState<'INTRO' | 'SIMULATION' | 'RESULT'>('INTRO');
 
     // Environment Factors (0-100)
+    const resultRef = React.useRef<HTMLDivElement>(null);
     const [foodAccess, setFoodAccess] = useState(50); // High Calorie Accessibility
     const [workHours, setWorkHours] = useState(50);   // Work Stress / Sedentary
     const [sleepQuality, setSleepQuality] = useState(50); // 100 = Good, 0 = Bad (Inverse in calc)

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { exhibitionData } from '../../data/exhibitionData';
 
+import { ShareButton } from '../ShareButton';
+
 interface DisabilityGameProps {
     onClose?: () => void;
 }
@@ -124,13 +126,14 @@ export const DisabilityGame: React.FC<DisabilityGameProps> = ({ onClose }) => {
                                     {data?.details.coreMessage}
                                 </p>
 
-                                <div className="flex gap-4 justify-center">
+                                <div className="flex gap-4 justify-center flex-wrap">
                                     <button
                                         onClick={handleReset}
                                         className="px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
                                     >
                                         重新選擇
                                     </button>
+                                    <ShareButton text="我剛剛體驗了身障者每天面臨的「隱形障礙」。在 Lilly Museum，換個角度看世界。" />
                                     {onClose && (
                                         <button
                                             onClick={onClose}

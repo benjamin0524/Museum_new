@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { exhibitionData } from '../../data/exhibitionData';
 
+import { ShareButton } from '../ShareButton';
+
 interface MyopiaGameProps {
     onClose?: () => void;
 }
@@ -137,13 +139,14 @@ export const MyopiaGame: React.FC<MyopiaGameProps> = ({ onClose }) => {
                                 <p className="text-xl text-cyan-300 italic mb-10 border-l-4 border-cyan-500 pl-6 text-left leading-normal">
                                     {data?.details.coreMessage}
                                 </p>
-                                <div className="flex gap-4 justify-center">
+                                <div className="flex gap-4 justify-center flex-wrap">
                                     <button
                                         onClick={handleStart}
                                         className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
                                     >
                                         再玩一次
                                     </button>
+                                    <ShareButton className="bg-cyan-700 hover:bg-cyan-600" />
                                     {onClose && (
                                         <button
                                             onClick={onClose}

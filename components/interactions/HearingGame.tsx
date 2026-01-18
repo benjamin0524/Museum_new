@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { exhibitionData } from '../../data/exhibitionData';
 
+import { ShareButton } from '../ShareButton';
+
 interface HearingGameProps {
     onClose?: () => void;
 }
@@ -123,13 +125,14 @@ export const HearingGame: React.FC<HearingGameProps> = ({ onClose }) => {
                                     {data?.details.coreMessage}
                                 </p>
 
-                                <div className="flex gap-4 justify-center">
+                                <div className="flex gap-4 justify-center flex-wrap">
                                     <button
                                         onClick={handleRetry}
                                         className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
                                     >
                                         再試一次
                                     </button>
+                                    <ShareButton text="我在 Lilly Museum 挑戰了讀唇語，真的超難！只需五分鐘，體驗生活中的「身不由己」。" />
                                     {onClose && (
                                         <button
                                             onClick={onClose}

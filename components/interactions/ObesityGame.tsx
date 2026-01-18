@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { exhibitionData } from '../../data/exhibitionData';
 
+import { ShareButton } from '../ShareButton';
+
 interface ObesityGameProps {
     onClose?: () => void;
 }
@@ -146,13 +148,14 @@ export const ObesityGame: React.FC<ObesityGameProps> = ({ onClose }) => {
                                 {data?.details.coreMessage}
                             </p>
 
-                            <div className="flex gap-4 justify-center">
+                            <div className="flex gap-4 justify-center flex-wrap">
                                 <button
                                     onClick={handleStart}
                                     className="px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-full font-bold text-lg shadow-lg transition-transform active:scale-95"
                                 >
                                     重新模擬
                                 </button>
+                                <ShareButton text="在 Lilly Museum 發現：體重不完全是意志力的問題，環境因素影響也很大！快來測測你的環境難度。" />
                                 {onClose && (
                                     <button
                                         onClick={onClose}

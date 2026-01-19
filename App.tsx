@@ -77,7 +77,7 @@ const App: React.FC = () => {
       {/* 3D Scene */}
       <Canvas
         shadows={!isMobile} // Disable shadows entirely on mobile
-        dpr={isMobile ? [1, 1.5] : [1, 2]} // Cap mobile resolution to 1.5x pixel ratio
+        dpr={[1, 1.5]} // Cap resolution to 1.5x pixel ratio for performance
         camera={{ position: [0, 1.7, startZ], fov: 75 }}
         className="w-full h-full bg-[#f0f0f0]"
         style={{ pointerEvents: appState === AppState.INSPECTING ? 'none' : 'auto' }}

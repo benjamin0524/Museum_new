@@ -88,27 +88,11 @@ export const MuseumRoom: React.FC<MuseumRoomProps> = ({ isMobile }) => {
       {/* Floor - Premium Reflective Material */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
         <planeGeometry args={[ROOM_WIDTH, ROOM_DEPTH]} />
-        {!isMobile ? (
-          <MeshReflectorMaterial
-            blur={[300, 100]}
-            resolution={1024}
-            mixBlur={1}
-            mixStrength={60} // Strength of the reflections
-            roughness={0.6} // Glossy but slightly matte wood
-            depthScale={1.2}
-            minDepthThreshold={0.4}
-            maxDepthThreshold={1.4}
-            color="#2a2a2a" // Dark elegant floor
-            metalness={0.5}
-            mirror={0.5} // Mirror intensity
-          />
-        ) : (
-          <meshStandardMaterial
-            color="#2a2a2a"
-            roughness={0.4}
-            metalness={0.4}
-          />
-        )}
+        <meshStandardMaterial
+          color="#2a2a2a"
+          roughness={0.4}
+          metalness={0.4}
+        />
       </mesh>
 
       {/* Sub-floor to prevent z-fighting gaps */}

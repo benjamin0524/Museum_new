@@ -69,7 +69,7 @@ export const MuseumRoom: React.FC<MuseumRoomProps> = ({ isMobile }) => {
               intensity={1.5}
               angle={0.5}
               penumbra={0.4}
-              castShadow
+              // castShadow // Disabled for performance (9 shadow maps is too heavy)
               color="#fff0e0" // Slightly warm gallery light
               distance={20}
             />
